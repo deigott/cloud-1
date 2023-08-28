@@ -1,0 +1,16 @@
+# The master playbook that automates all services
+---
+- name: Deploy Dockerized Services
+  hosts: servers
+  gather_facts: true
+  
+
+
+  roles:
+    - startup
+  #   # - docker
+  #   - nginx
+  #   # - mariadb
+  #   # - phpmyadmin
+  #   # - wordpress
+  #   - deploy
