@@ -9,7 +9,7 @@
   roles:
     - startup
   #   # - docker
-  #   - nginx
+    # - nginx
   #   # - mariadb
   #   # - phpmyadmin
   #   # - wordpress

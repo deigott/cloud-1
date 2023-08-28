@@ -1,7 +1,10 @@
 ---
 - name: Create and start services
-  community.docker.docker_container:
+  community.docker.docker_image:
     name: nginx
-    image: debian:latest
-    command:
-  register: output
+    source: build
+    build:
+      path: '{{ playbook_dir }}/roles/nginx/srcs/Dockerfile'
+      args:
+        NG_PASSWD: '{{ sudo_pass }}'
+    state: present

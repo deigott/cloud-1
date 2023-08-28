@@ -1,7 +1,26 @@
+# Startup installation for my servers
+# Configuring and Installing all necessary packages.
 ---
-
-
-- name : Installing Nginx
+- name: Update package cache
   apt:
+    update_cache: yes
+- name : Installing packages
+  apt:
+    name: [
+      'vim',
+      'nginx',
+      'ufw',
+      'openssl',
+      'python3-pip',
+      'docker',
+      'docker.io',
+      'docker-compose',
+    ]
+    update_cache: true
+    state: latest
+
+- name: Start nginx service
+  systemd:
     name: nginx
-    state: present
+    state: running
+    enabled: true
