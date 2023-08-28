@@ -1,0 +1,7 @@
+---
+- name: Create and start services
+  community.docker.docker_container:
+    name: nginx
+    image: debian:latest
+    command:
+  register: output
