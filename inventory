@@ -1,0 +1,11 @@
+
+[servers]
+
+172.17.0.2
+
+[servers:vars]
+ansible_user=mashad
+ansible_password='{{sudo_pass}}'
+ansible_become=yes
+ansible_become_method=sudo 
+ansible_become_pass='{{ sudo_pass }}'
