@@ -1,10 +1,11 @@
 ---
-- name: Create and start services
-  community.docker.docker_image:
-    name: nginx
-    source: build
-    build:
-      path: '{{ playbook_dir }}/roles/nginx/srcs/Dockerfile'
-      args:
-        NG_PASSWD: '{{ sudo_pass }}'
+- name: Build nginx container
+  community.docker.docker_compose:
+    project_src: '{{ webapp_path }}'
+    project_name: webapp
+    services:
+      - nginx
+    build: true
+    stopped: false
     state: present
+  
