@@ -1,0 +1,28 @@
+---
+# Copying and Templating nginx's data in the remote host
+- name: Create nginx directory
+  file:
+    path: '{{ webapp_path }}/srcs/nginx'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+
+- name: Templating nginx's Dockerfile in remote host
+  template:
+    src: '{{ playbook_dir }}/roles/nginx/srcs/template/Dockerfile.j2'
+    dest: '{{ webapp_path }}/srcs/nginx/Dockerfile'
+    mode: 0664
+  become_user: '{{ sudo_user }}'
+
+- name: Create nginx conf directory
+  file:
+    path: '{{ webapp_path }}/srcs/nginx/conf'
+    state: directory
+  become_user: '{{ sudo_user }}'  
+
+- name: Templating nginx's config in remote host
+  template:
+    src: '{{ playbook_dir }}/roles/nginx/srcs/template/default.conf.j2'
+    dest: '{{ webapp_path }}/srcs/nginx/conf/default.conf'
+    mode: 0664
+  become_user: '{{ sudo_user }}'
