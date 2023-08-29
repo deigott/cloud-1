@@ -1,11 +1,3 @@
 ---
-- name: Build wordpress container
-  community.docker.docker_compose:
-    project_src: '{{ webapp_path }}'
-    project_name: webapp
-    services:
-      - wordpress
-    build: true
-    stopped: false
-    state: present
-  
+- import_tasks: wordpress-configure.yml
+

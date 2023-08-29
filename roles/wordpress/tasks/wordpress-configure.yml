@@ -1,0 +1,26 @@
+---
+# Copying and Templating wordpress's data in the remote host
+- name: Create wordpress's directory
+  file:
+    path: '{{ webapp_path }}/srcs/wordpress'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+- name: Copying wordpress's directory to remote host
+  copy:
+    src: '{{ playbook_dir }}/roles/wordpress/srcs/Dockerfile'
+    dest: '{{ webapp_path }}/srcs/wordpress/Dockerfile'
+  become_user: '{{ sudo_user }}'
+
+- name: Create wordpress's conf directory
+  file:
+    path: '{{ webapp_path }}/srcs/wordpress/conf'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+- name: Templating phpmyadmin's config in remote host
+  template:
+    src: '{{ playbook_dir }}/roles/wordpress/srcs/template/install.j2'
+    dest: '{{ webapp_path }}/srcs/wordpress/conf/install.sh'
+    mode: 0664
+  become_user: '{{ sudo_user }}'
