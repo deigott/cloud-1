@@ -1,8 +1,8 @@
 [servers]
-172.17.0.2
+10.13.250.26
 
 [servers:vars]
-ansible_user=mashad
+ansible_user='{{ sudo_user }}'
 ansible_password='{{sudo_pass}}'
 ansible_become=yes
 ansible_become_method=sudo 
