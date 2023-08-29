@@ -1,0 +1,84 @@
+version: "3.7"
+
+services:
+
+  mariadb:
+    container_name: "mariadb"
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./srcs/mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - web_network
+
+  phpmyadmin:
+    container_name: "phpmyadmin"
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./srcs/phpmyadmin
+    networks:
+      - web_network
+    volumes:
+      - phpma_data:/var/www/phpmyadmin
+    depends_on:
+      - mariadb
+
+  wordpress:
+    container_name: "wordpress"
+    restart: always
+    env_file: .env
+    build:
+      context: ./srcs/wordpress
+    volumes:
+      - wp_data:/var/www/wordpress
+    networks:
+      - web_network
+    depends_on:
+      - mariadb
+
+  nginx:
+    container_name: "nginx"
+    restart: always
+    env_file: .env
+    build:
+      context: ./srcs/nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - wp_data:/var/www/wordpress:ro
+      - phpma_data:/var/www/phpmyadmin:ro
+    networks:
+      - web_network
+    depends_on:
+      - phpmyadmin
+      - wordpress
+
+networks:
+  web_network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{mysql_volume}}'
+  wp_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{wordpress_volume}}'
+  phpma_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '{{phpmyadmin_volume}}'
