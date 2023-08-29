@@ -1,0 +1,11 @@
+---
+- name: Build phpmyadmin container
+  community.docker.docker_compose:
+    project_src: '{{ webapp_path }}'
+    project_name: webapp
+    services:
+      - phpmyadmin
+    build: true
+    stopped: false
+    state: present
+  
