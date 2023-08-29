@@ -1,0 +1,27 @@
+---
+# Copying and Templating phpmyadmin's data in the remote host
+
+- name: Create phpmyadmin's directory
+  file:
+    path: '{{ webapp_path }}/srcs/phpmyadmin'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+- name: Copying phpmyadmin's Dockerfile to remote host
+  copy:
+    src: '{{ playbook_dir }}/roles/phpmyadmin/srcs/Dockerfile'
+    dest: '{{ webapp_path }}/srcs/phpmyadmin/Dockerfile'
+  become_user: '{{ sudo_user }}'
+
+- name: Create phpmyadmin's conf directory
+  file:
+    path: '{{ webapp_path }}/srcs/phpmyadmin/conf'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+- name: Templating phpmyadmin's config in remote host
+  template:
+    src: '{{ playbook_dir }}/roles/phpmyadmin/srcs/template/config.inc.php.j2'
+    dest: '{{ webapp_path }}/srcs/phpmyadmin/conf/config.inc.php'
+    mode: 0664
+  become_user: '{{ sudo_user }}'
