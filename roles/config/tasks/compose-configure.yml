@@ -1,0 +1,26 @@
+---
+# Templating docker-compose in remote hosts
+
+- name: Copy docker-compose to host
+  template:
+    src: '{{ playbook_dir }}/roles/config/srcs/docker-compose.j2'
+    dest: '{{ webapp_path }}/docker-compose.yml'
+    mode: 0755
+  become_user: '{{ sudo_user }}'
+
+- name: Create the volume directories if they are not present
+  file:
+    path: "/home/mashad/data/{{ item }}"
+    state: directory
+  loop:
+    - wordpress
+    - mariadb
+    - phpmyadmin
+
+# Templating the .env file
+- name: Templating .env in remote host
+  template:
+    src: '{{ playbook_dir }}/roles/config/srcs/.env.j2'
+    dest: '{{ webapp_path }}/.env'
+    mode: 0664
+  become_user: '{{ sudo_user }}'

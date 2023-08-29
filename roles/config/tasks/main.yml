@@ -1,132 +1,42 @@
+# Startup installation for my servers
+# Configuring and Installing all necessary packages.
 ---
-# Templating docker-compose in remote hosts
+- name: Update package cache
+  apt:
+    update_cache: yes
 
-- name: Copy docker-compose to host
-  template:
-    src: '{{ playbook_dir }}/roles/webapp/docker-compose.j2'
-    dest: '{{ webapp_path }}/docker-compose.yml'
-    mode: 0755
-  become_user: '{{ sudo_user }}'
+- name : Installing packages
+  apt:
+    name: [
+      'vim',
+      'ufw',
+      'openssl',
+      'python3-pip',
+      'docker',
+      'docker.io',
+      'docker-compose',
+    ]
+    update_cache: true
+    state: latest
 
-- name: Create the directories if they are not present
+- name: Create project directory
   file:
-    path: "/home/mashad/data/{{ item }}"
+    path: '{{ webapp_path }}'
     state: directory
-  loop:
-    - wordpress
-    - mariadb
-    - phpmyadmin
+  become_user: '{{sudo_user}}'
 
-# Templating the .env file
-- name: Templating .env in remote host
-  template:
-    src: '{{ playbook_dir }}/roles/webapp/.env.j2'
-    dest: '{{ webapp_path }}/.env'
-    mode: 0664
-  become_user: '{{ sudo_user }}'
+- name: Add user to docker group
+  user:
+    name: '{{ sudo_user }}'
+    groups: docker
+    append: yes
+  tags: docker_user_group
 
-# Copying and Templating nginx's data in the remote host
-
-- name: Create nginx directory
-  file:
-    path: '{{ webapp_path }}/srcs/nginx'
-    state: directory
-  become_user: '{{ sudo_user }}'
+- name: Start docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: true
 
 
-- name: Templating nginx's Dockerfile in remote host
-  template:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/nginx/template/Dockerfile.j2'
-    dest: '{{ webapp_path }}/srcs/nginx/Dockerfile'
-    mode: 0664
-  become_user: '{{ sudo_user }}'
-
-- name: Create nginx conf directory
-  file:
-    path: '{{ webapp_path }}/srcs/nginx/conf'
-    state: directory
-  become_user: '{{ sudo_user }}'  
-
-- name: Templating nginx's config in remote host
-  template:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/nginx/template/default.conf.j2'
-    dest: '{{ webapp_path }}/srcs/nginx/conf/default.conf'
-    mode: 0664
-  become_user: '{{ sudo_user }}'
-
-# Copying and Templating wordpress's data in the remote host
-
-- name: Copying wordpress's directory to remote host
-  copy:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/wordpress'
-    dest: '{{ webapp_path }}/srcs/'
-  become_user: '{{ sudo_user }}'
-
-
-# Copying and Templating phpmyadmin's data in the remote host
-
-- name: Create phpmyadmin's directory
-  file:
-    path: '{{ webapp_path }}/srcs/phpmyadmin'
-    state: directory
-  become_user: '{{ sudo_user }}'
-
-- name: Copying phpmyadmin's Dockerfile to remote host
-  copy:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/phpmyadmin/Dockerfile'
-    dest: '{{ webapp_path }}/srcs/phpmyadmin/Dockerfile'
-  become_user: '{{ sudo_user }}'
-
-- name: Create phpmyadmin's conf directory
-  file:
-    path: '{{ webapp_path }}/srcs/phpmyadmin/conf'
-    state: directory
-  become_user: '{{ sudo_user }}'
-
-- name: Templating phpmyadmin's config in remote host
-  template:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/phpmyadmin/template/config.inc.php.j2'
-    dest: '{{ webapp_path }}/srcs/phpmyadmin/conf/config.inc.php'
-    mode: 0664
-  become_user: '{{ sudo_user }}'
-
-
-
-# Copying and Templating mariadb's data in the remote host
-
-- name: Create mariadb's directory
-  file:
-    path: '{{ webapp_path }}/srcs/mariadb'
-    state: directory
-  become_user: '{{ sudo_user }}'
-
-- name: Copying mariadb's directory to remote host
-  copy:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/mariadb/Dockerfile'
-    dest: '{{ webapp_path }}/srcs/mariadb/Dockerfile'
-  become_user: '{{ sudo_user }}'
-
-- name: Create mariadb's conf directory
-  file:
-    path: '{{ webapp_path }}/srcs/mariadb/conf'
-    state: directory
-  become_user: '{{ sudo_user }}'
-
-- name: Copying mariadb's config to remote host
-  copy:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/mariadb/template/mariadb-server.cnf'
-    dest: '{{ webapp_path }}/srcs/mariadb/conf/mariadb-server.cnf'
-  become_user: '{{ sudo_user }}'
-
-- name: Copying mariadb's launch script to remote host
-  copy:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/mariadb/template/launch.sh'
-    dest: '{{ webapp_path }}/srcs/mariadb/conf/launch.sh'
-  become_user: '{{ sudo_user }}'
-
-- name: Templating maraidb's config in remote host
-  template:
-    src: '{{ playbook_dir }}/roles/webapp/srcs/mariadb/template/phpmyadmin.j2'
-    dest: '{{ webapp_path }}/srcs/mariadb/conf/phpmyadmin.sql'
-    mode: 0664
-  become_user: '{{ sudo_user }}'
+- import_tasks: compose-configure.yml
