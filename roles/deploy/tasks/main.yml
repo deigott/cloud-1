@@ -1,33 +1,5 @@
 ---
-- name: Start Docker Containers
-  hosts: servers
-  gather_facts: false
-
-  tasks:
-    - name: Start nginx container
-      community.docker.docker_container:
-        name: nginx
-        state: started
-
-    - name: Start wordpress container
-      community.docker.docker_container:
-        name: nginx
-        scale:
-          app: 4
-        state: started
-
-    - name: Start phpmyadmin container
-      community.docker.docker_container:
-        name: phpmyadmin
-        scale:
-          app: 4
-        state: started
-
-    - name: Start mariadb container
-      community.docker.docker_container:
-        name: mariadb
-        scal:
-          app: 4
-        state: started
-
-    # Add more tasks for other containers
+- name: Launch containers
+  docker_compose:
+    project_src: '{{ webapp_path }}'
+    state: present
