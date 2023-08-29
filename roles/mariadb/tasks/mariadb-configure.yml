@@ -1,0 +1,38 @@
+---
+# Copying and Templating mariadb's data in the remote host
+- name: Create mariadb's directory
+  file:
+    path: '{{ webapp_path }}/srcs/mariadb'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+- name: Copying mariadb's directory to remote host
+  copy:
+    src: '{{ playbook_dir }}/roles/mariadb/srcs/Dockerfile'
+    dest: '{{ webapp_path }}/srcs/mariadb/Dockerfile'
+  become_user: '{{ sudo_user }}'
+
+- name: Create mariadb's conf directory
+  file:
+    path: '{{ webapp_path }}/srcs/mariadb/conf'
+    state: directory
+  become_user: '{{ sudo_user }}'
+
+- name: Copying mariadb's config to remote host
+  copy:
+    src: '{{ playbook_dir }}/roles/mariadb/srcs/template/mariadb-server.cnf'
+    dest: '{{ webapp_path }}/srcs/mariadb/conf/mariadb-server.cnf'
+  become_user: '{{ sudo_user }}'
+
+- name: Copying mariadb's launch script to remote host
+  copy:
+    src: '{{ playbook_dir }}/roles/mariadb/srcs/template/launch.sh'
+    dest: '{{ webapp_path }}/srcs/mariadb/conf/launch.sh'
+  become_user: '{{ sudo_user }}'
+
+- name: Templating maraidb's config in remote host
+  template:
+    src: '{{ playbook_dir }}/roles/mariadb/srcs/template/phpmyadmin.j2'
+    dest: '{{ webapp_path }}/srcs/mariadb/conf/phpmyadmin.sql'
+    mode: 0664
+  become_user: '{{ sudo_user }}'
