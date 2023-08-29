@@ -3,14 +3,15 @@
 - name: Deploy Dockerized Services
   hosts: servers
   gather_facts: true
-  
+  vars_files:
+    - 'vault.yml'  
 
 
   roles:
     - startup
-  #   # - docker
-    # - nginx
-  #   # - mariadb
-  #   # - phpmyadmin
-  #   # - wordpress
-  #   - deploy
+    - config
+    - mariadb
+    - phpmyadmin
+    - wordpress
+    - nginx
+    - deploy
