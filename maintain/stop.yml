@@ -1,0 +1,15 @@
+# The master playbook that automates all services
+---
+- name: Stop all containers
+  hosts: servers
+  gather_facts: true
+  vars_files:
+    - 'vault.yml'
+  tasks:
+    - name: Stop all containers
+      community.docker.docker_compose:
+        project_src: '{{ webapp_path }}'
+        project_name: webapp
+        stopped: true
+        state: stopped
+  
