@@ -1,0 +1,17 @@
+---
+- name: Maintaining individual all starting
+  hosts: servers
+  gather_facts: true
+  vars_files:
+    - 'vault.yml'
+
+  tasks:
+    - name: Start one containers
+    community.docker.docker_compose:
+      project_src: '{{ webapp_path }}'
+      project_name: webapp
+      services:
+        - '{{ container_name }}'
+      build: false
+      stopped: false
+      state: present

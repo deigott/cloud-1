@@ -1,6 +1,5 @@
-# The master playbook that automates all services
 ---
-- name: Stop all containers
+- name: Maintaining individual all stoping
   hosts: servers
   gather_facts: true
   vars_files:
