@@ -6,7 +6,7 @@
     state: directory
   become_user: '{{ sudo_user }}'
 
-- name: Copying wordpress's directory to remote host
+- name: Copying wordpress's Dockerfile to remote host
   copy:
     src: '{{ playbook_dir }}/roles/wordpress/srcs/Dockerfile'
     dest: '{{ webapp_path }}/srcs/wordpress/Dockerfile'
