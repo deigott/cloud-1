@@ -1,5 +1,6 @@
 [servers]
 "{{ server1 }}"
+"{{ server2 }}"
 
 [servers:vars]
 ansible_ssh_private_key_file="{{ssh_private}}"
