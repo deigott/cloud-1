@@ -16,7 +16,6 @@ RUN chmod 660 config.inc.php
 RUN sed '/^listen =/s/\/run\/php\/php8.2-fpm.sock/9001/' -i /etc/php/8.2/fpm/pool.d/www.conf
 
 #Creating dirs/files and setting perms
-RUN mkdir /run/php
 RUN touch /var/log/php8.2-fpm.log
 RUN chown -R www-data:www-data /var/www/phpmyadmin /run/php /var/log/php8.2-fpm.log
 
