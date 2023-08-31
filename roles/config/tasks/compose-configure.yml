@@ -10,7 +10,7 @@
 
 - name: Create the volume directories if they are not present
   file:
-    path: "/home/mashad/data/{{ item }}"
+    path: "{{ volumes_path }}/{{ item }}"
     state: directory
   loop:
     - wordpress
