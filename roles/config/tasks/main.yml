@@ -58,7 +58,7 @@
     rule: allow
     port: 80
 
-- name: Allow HTTP (port 443)
+- name: Allow HTTPS (port 443)
   ufw:
     rule: allow
     port: 443
