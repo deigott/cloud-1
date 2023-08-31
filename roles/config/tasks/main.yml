@@ -38,5 +38,37 @@
     state: started
     enabled: true
 
+- name: Enable UFW
+  ufw:
+    state: enabled
+
+- name: Configure UFW to start on boot
+  lineinfile:
+    path: /etc/ufw/ufw.conf
+    regexp: '^ENABLED='
+    line: 'ENABLED=yes'
+
+- name: Allow SSH (port 22)
+  ufw:
+    rule: allow
+    port: 22
+
+- name: Allow HTTP (port 80)
+  ufw:
+    rule: allow
+    port: 80
+
+- name: Allow HTTP (port 443)
+  ufw:
+    rule: allow
+    port: 443
+
+- name: Deny all incoming traffic
+  ufw:
+    rule: deny
+
+- name: Enable UFW to enforce changes
+  ufw:
+    state: enabled
 
 - import_tasks: compose-configure.yml
