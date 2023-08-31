@@ -1,0 +1,25 @@
+---
+- name: Maintaining containers health stoping
+  hosts: servers
+  remote_user: '{{ sudo_user }}'
+  become: true
+  become_method: sudo
+  gather_facts: true
+  vars_files:
+    - '../vault.yml'
+
+  tasks:
+    - name: Check if all containers are started
+      community.docker.docker_compose:
+        project_src: '{{ webapp_path }}'
+        project_name: webapp
+        services:
+          - '{{ item }}'
+        loop:
+          - mariadb
+          - wordpress
+          - phpmyadmin
+          - nginx
+        build: false
+        stopped: false
+        state: present
