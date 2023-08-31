@@ -2,9 +2,12 @@
 ---
 - name: Deploy Dockerized Services
   hosts: servers
+  remote_user: '{{ sudo_user }}'
+  become: true
+  become_method: sudo
   gather_facts: true
   vars_files:
-    - 'vault.yml'  
+    - 'vault.yml'
 
 
   roles:
