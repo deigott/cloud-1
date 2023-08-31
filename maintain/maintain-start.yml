@@ -1,9 +1,13 @@
 ---
 - name: Maintaining individual all stoping
   hosts: servers
+  remote_user: '{{ sudo_user }}'
+  become: true
+  become_method: sudo
   gather_facts: true
   vars_files:
-    - 'vault.yml'
+    - '../vault.yml'
+
   tasks:
     - name: Start all containers
       community.docker.docker_compose:
