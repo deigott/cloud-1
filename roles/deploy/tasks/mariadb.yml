@@ -5,6 +5,6 @@
     project_name: webapp
     services:
       - mariadb
-    build: false
+    build: true
     stopped: false
     state: present
