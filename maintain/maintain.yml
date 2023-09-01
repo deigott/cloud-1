@@ -15,11 +15,11 @@
         project_name: webapp
         services:
           - '{{ item }}'
-        loop:
-          - mariadb
-          - wordpress
-          - phpmyadmin
-          - nginx
         build: false
         stopped: false
         state: present
+      loop:
+        - mariadb
+        - wordpress
+        - phpmyadmin
+        - nginx

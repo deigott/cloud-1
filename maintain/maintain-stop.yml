@@ -9,11 +9,17 @@
     - '../vault.yml'
 
   tasks:
-    - name: Stop all containers
+    - name: Check if all containers are stoped, stop them if not
       community.docker.docker_compose:
         project_src: '{{ webapp_path }}'
         project_name: webapp
+        services:
+          - '{{ item }}'
         build: false
         stopped: true
         state: present
-  
+      loop:
+        - mariadb
+        - wordpress
+        - phpmyadmin
+        - nginx
