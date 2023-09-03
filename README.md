@@ -4,13 +4,17 @@
 
 Welcome to Cloud-1, an automated deployment project designed to deploy web applications on remote servers effortlessly. This README provides an overview of the project's key aspects and steps.
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Platform Choice](#platform-choice)
-- [Mandatory Part](#mandatory-part)
-- [Focus Points](#focus-points)
-- [Submission and Peer-Evaluation](#submission-and-peer-evaluation)
-- [How Ansible Works](#how-ansible-works)
+## Contents
+1. [Introduction](#introduction)
+2. [Platform Choice](#platform-choice)
+3. [Mandatory Part](#mandatory-part)
+4. [Focus Points](#focus-points)
+5. [Submission and Peer-Evaluation](#submission-and-peer-evaluation)
+6. [Using Ansible](#using-ansible)
+7. [Docker and Docker Compose](#docker-and-docker-compose)
+8. [FAQs](#faqs)
+9. [Contributing](#contributing)
+10. [License](#license)
 
 ## Introduction
 Cloud-1 is inspired by the subject "Inception." The primary objective is to deploy your web application and the necessary Docker infrastructure on a remote server provided by a cloud provider. In this version, each process will have its container, and automation is crucial for deployment. We recommend using Ansible for automation.
